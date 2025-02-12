@@ -18,7 +18,7 @@ abstract class AppRouter {
       ),
      GoRoute(
         path: kAuthChoiceView,
-        builder: (context, state) => const AuthChoiceView(),
+        builder: (context, state) =>  AuthChoiceView(),
       ),
      
     ],
