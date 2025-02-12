@@ -5,6 +5,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color backgroundColor;
   final Color textColor;
+  final double borderRadius;
   final EdgeInsets padding;
   final BorderSide? border;
 
@@ -12,9 +13,10 @@ class CustomButton extends StatelessWidget {
     Key? key,
     required this.label,
     required this.onPressed,
-    required this.backgroundColor,
-    required this.textColor,
-    required this.padding,
+    this.backgroundColor = Colors.blue,
+    this.textColor = Colors.white,
+    this.borderRadius = 30.0,
+    this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
     this.border,
   }) : super(key: key);
 
@@ -24,10 +26,10 @@ class CustomButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
-        elevation: 0,
         padding: padding,
+        elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(borderRadius),
           side: border ?? BorderSide.none,
         ),
       ),
@@ -35,8 +37,8 @@ class CustomButton extends StatelessWidget {
         label,
         style: TextStyle(
           color: textColor,
-          fontSize: MediaQuery.of(context).size.width * 0.045,
           fontWeight: FontWeight.bold,
+          fontSize: 16,
         ),
       ),
     );

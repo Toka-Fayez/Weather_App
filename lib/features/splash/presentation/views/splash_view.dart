@@ -30,38 +30,27 @@ class _SplashViewState extends State<SplashView> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.black, Color.fromARGB(255, 46, 100, 158)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      body: Stack(
+        children: [
+          Center(
+            child: Image.asset(
+              AppAssets.logo,
+              width: screenWidth * 0.9,
+            ),
           ),
-        ),
-        child: Stack(
-          children: [
-            Center(
-              child: Image.asset(
-                AppAssets.logo,
-                width: screenWidth * 0.9,
+          if (showSkipButton)
+            Positioned(
+              bottom: screenHeight * 0.04,
+              right: screenWidth * 0.05,
+              child: GestureDetector(
+                onTap: () {
+                  GoRouter.of(context).push(AppRouter.kAuthChoiceView);
+                },
+                child: SkipButton(
+                    screenHeight: screenHeight, screenWidth: screenWidth),
               ),
             ),
-            if (showSkipButton)
-              Positioned(
-                bottom: screenHeight * 0.04,
-                right: screenWidth * 0.05,
-                child: GestureDetector(
-                  onTap: () {
-                    GoRouter.of(context).push(AppRouter.kAuthChoiceView);
-                  },
-                  child: SkipButton(
-                      screenHeight: screenHeight, screenWidth: screenWidth),
-                ),
-              ),
-          ],
-        ),
+        ],
       ),
     );
   }
