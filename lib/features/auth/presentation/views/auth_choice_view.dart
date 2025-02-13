@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:weatherapp/core/utilies/assets.dart';
 import 'package:weatherapp/core/utilies/strings.dart';
 import '../../../../core/app_router/app_router.dart';
-import '../../../../core/presentation/custom_button.dart';
+import '../../../../core/utilies/custom_button.dart';
 
 class AuthChoiceView extends StatelessWidget {
   @override

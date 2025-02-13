@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
 import 'core/app_router/app_router.dart';
-import 'core/presentation/app_roote.dart';
+import 'core/utilies/app_roote.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/services/custom_bloc_observer.dart';
 import 'core/services/get_it_service.dart';

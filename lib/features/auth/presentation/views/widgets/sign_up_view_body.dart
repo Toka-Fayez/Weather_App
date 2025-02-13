@@ -5,7 +5,7 @@ import 'package:weatherapp/core/utilies/strings.dart';
 import 'package:weatherapp/features/auth/presentation/cubits/signup_cubit/signup_cubit_cubit.dart';
 import 'package:weatherapp/features/auth/presentation/views/widgets/custom_user_name.dart';
 import '../../../../../core/app_router/app_router.dart';
-import '../../../../../core/presentation/custom_button.dart';
+import '../../../../../core/utilies/custom_button.dart';
 import 'password_field.dart';
 import 'custom_email.dart';
 
