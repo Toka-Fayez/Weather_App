@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:weatherapp/core/utilies/strings.dart';
-import 'package:weatherapp/features/auth/presentation/cubits/signup_cubit/signup_cubit_cubit.dart';
-import 'package:weatherapp/features/auth/presentation/views/widgets/custom_user_name.dart';
+import 'package:weatherapp/features/auth/presentation/cubits/login_cubit/login_cubit.dart';
+import 'package:weatherapp/features/auth/presentation/views/widgets/custom_email.dart';
+import 'package:weatherapp/features/auth/presentation/views/widgets/password_field.dart';
 import '../../../../../core/app_router/app_router.dart';
 import '../../../../../core/presentation/custom_button.dart';
-import 'password_field.dart';
-import 'custom_email.dart';
+import 'custom_text_form_field.dart';
 
-class SignUpViewBody extends StatefulWidget {
-  const SignUpViewBody({
+class LoginViewBody extends StatefulWidget {
+  const LoginViewBody({
     super.key,
     required this.screenWidth,
     required this.screenHeight,
@@ -20,14 +20,16 @@ class SignUpViewBody extends StatefulWidget {
   final double screenHeight;
 
   @override
-  State<SignUpViewBody> createState() => _SignUpViewBodyState();
+  State<LoginViewBody> createState() => _LoginViewBodyState();
 }
 
-class _SignUpViewBodyState extends State<SignUpViewBody> {
+class _LoginViewBodyState extends State<LoginViewBody> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
-  late String name, email, password;
+
+  late String email, password;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -39,22 +41,19 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              AppString.signUp,
+              AppString.login,
               style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width * 0.08,
                 color: Colors.white,
-                fontSize: MediaQuery.of(context).size.width * 0.06,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: widget.screenHeight * 0.03),
-            CustomUserName(onSaved: (value) {
-              name = value!;
-            }),
-            SizedBox(height: widget.screenHeight * 0.02),
             CustomEmail(
               onSaved: (value) {
                 email = value!;
               },
+             
             ),
             SizedBox(height: widget.screenHeight * 0.02),
             PasswordField(
@@ -64,19 +63,15 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
             ),
             SizedBox(height: widget.screenHeight * 0.04),
             CustomButton(
-              label: AppString.signUp,
+              label: AppString.login,
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   formKey.currentState!.save();
-                  context.read<SignupCubit>().createUserWithEmailAndPassword(
-                        email,
-                        password,
-                        name,
-                      );
+
+                  context.read<LoginCubit>().login(email, password);
                 } else {
-                  setState(() {
-                    autovalidateMode = AutovalidateMode.always;
-                  });
+                  autovalidateMode = AutovalidateMode.always;
+                  setState(() {});
                 }
               },
               backgroundColor: Colors.white,
@@ -85,10 +80,11 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
             SizedBox(height: widget.screenHeight * 0.02),
             TextButton(
               onPressed: () {
-                GoRouter.of(context).push(AppRouter.kLoginView);
+                GoRouter.of(context)
+                    .push(AppRouter.kSignUpView); // مسار صفحة Sign Up
               },
               child: const Text(
-                AppString.alreadyHaveAccount,
+                AppString.noAccount,
                 style: TextStyle(color: Colors.white),
               ),
             ),

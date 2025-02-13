@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../features/auth/presentation/views/widgets/custom_text_form_field.dart';
-import '../utilies/strings.dart';
+import 'custom_text_form_field.dart';
+import '../../../../../core/utilies/strings.dart';
 
 class PasswordField extends StatefulWidget {
   const PasswordField({
