@@ -37,7 +37,7 @@ class LoginView extends StatelessWidget {
               const CustomTextFormField(
                 hint: AppString.password,
                 icon: Icons.lock,
-                isPassword: true,
+                obscureText: true,
               ),
               SizedBox(height: screenHeight * 0.04),
               CustomButton(
