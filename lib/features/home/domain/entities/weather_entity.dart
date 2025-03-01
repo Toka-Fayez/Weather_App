@@ -14,6 +14,15 @@ class WeatherEntity {
     required this.condition,
     required this.forecast,
   });
+   List<int> getWeatherFeatures() {
+    return [
+      condition.toLowerCase() == "rainy" ? 1 : 0,  //rainy
+      condition.toLowerCase() == "sunny" ? 1 : 0,  //sunny
+      currentTemperature > 30 ? 1 : 0,             //hot
+      (currentTemperature >= 20 && currentTemperature <= 30) ? 1 : 0, //mild
+      humidity < 70 ? 1 : 0                        //normal
+    ];
+  }
 }
 
 class ForecastEntity {

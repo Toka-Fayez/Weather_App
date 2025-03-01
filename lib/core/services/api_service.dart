@@ -13,12 +13,12 @@ class ApiService {
     try {
       final response = await _dio.get(baseUrl, queryParameters: {
         'key': apiKey,
-        'q': '$latitude,$longitude', // ✅ دمج الإحداثيات في q كما يطلب API
-        'days': 3, // ✅ إضافة عدد الأيام المطلوبة
-        'units': 'metric', // ❌ هذا غير مدعوم في WeatherAPI، يمكن إزالته
+        'q': '$latitude,$longitude', 
+        'days': 3, 
+        'units': 'metric', 
       });
 
-      print("Weather API Response: ${response.data}"); // ✅ التحقق من الرد
+      print("Weather API Response: ${response.data}"); 
       return response.data;
     } catch (e) {
       print("Weather API Error: $e");

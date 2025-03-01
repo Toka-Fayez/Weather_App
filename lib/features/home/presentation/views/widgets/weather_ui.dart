@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
-import 'weather_info_tile.dart';
-import 'forecast_tile.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../cubits/weather_cubit/weather_cubit.dart';
+import 'temperature_info.dart';
+import 'weather_info_row.dart';
+import 'forecast_list.dart';
+import 'custom_button.dart';
 
 class WeatherUI extends StatelessWidget {
   final dynamic weather;
   final double screenWidth;
   final double screenHeight;
 
-  const WeatherUI({
-    super.key,
-    required this.weather,
-    required this.screenWidth,
-    required this.screenHeight,
-  });
+  const WeatherUI({super.key, required this.weather, required this.screenWidth, required this.screenHeight});
 
   @override
   Widget build(BuildContext context) {
@@ -25,74 +22,49 @@ class WeatherUI extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(height: screenHeight * 0.15),
-          Center(
-            child: Column(
-              children: [
-                Text(
-                  '${weather.currentTemperature}°',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 80,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                   weather.condition ?? '',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          TemperatureInfo(weather: weather),
           SizedBox(height: screenHeight * 0.05),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              WeatherInfoTile(
-                title: 'Humidity',
-                value: '${weather.humidity}%',
-                icon: Icons.water_drop,
-              ),
-              WeatherInfoTile(
-                title: 'Rain',
-                value: '${(weather.rain * 100).toStringAsFixed(0)}%',
-                icon: Icons.cloud,
-              ),
-              WeatherInfoTile(
-                title: 'Wind',
-                value: '${weather.windSpeed} km/h',
-                icon: Icons.wind_power,
-              ),
-            ],
+          WeatherInfoRow(weather: weather),
+          SizedBox(height: screenHeight * 0.02),
+          ForecastList(forecast: weather.forecast),
+          CustomButton(
+            onPressed: () => _showWeatherMessage(context),
           ),
-          SizedBox(height: screenHeight * 0.05),
-          Expanded(
-            child: ListView.builder(
-              itemCount: weather.forecast.length,
-              itemBuilder: (context, index) {
-                final forecast = weather.forecast[index];
-
-                String formattedDate = "N/A";
-                if (forecast.day.isNotEmpty) {
-                  try {
-                    DateTime parsedDate = DateTime.parse(forecast.day);
-                    formattedDate = DateFormat("dd/M").format(parsedDate);
-                  } catch (e) {
-                    print("Error parsing date: $e");
-                  }
-                }
-                return ForecastTile(
-                  day: formattedDate,
-                  temperature: '${forecast.temperature}°',
-                  condition: forecast.condition,
-                );
-              },
-            ),
-          ),
+          SizedBox(height: screenHeight * 0.08),
         ],
       ),
     );
+  }
+
+  void _showWeatherMessage(BuildContext context) {
+    final state = context.read<WeatherCubit>().state;
+
+    if (state is WeatherLoadedState) {
+      print("🔥 Prediction: ${state.prediction}");
+      print("📌 Features: ${state.features}");
+      print("🌤️ WeatherEntity: ${state.weatherEntity}");
+
+      int prediction = state.prediction == 1 ? 1 : 0;
+
+      String message = prediction == 1
+          ? "Go out, the weather is fine ☀️"
+          : "Stay home today, the weather is not suitable 🚫";
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Weather Advice", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+          content: Text(message, style: const TextStyle(fontSize: 16)),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("OK", style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ],
+        ),
+      );
+    } else {
+      print("❌ No predictions available");
+    }
   }
 }
